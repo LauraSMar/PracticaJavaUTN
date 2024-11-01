@@ -1,11 +1,9 @@
 package PracticaJava.PracticaJava.Services;
 
 
-import PracticaJava.PracticaJava.Entitys.Flete;
-
-import java.util.Optional;
+import PracticaJava.PracticaJava.Entitys.Dtos.FleteDto;
 
 public interface FleteService {
-   public Optional<Flete> actualizarEstadoFlete(Long id);
+   public FleteDto actualizarEstadoFlete(Long id);
 
 }

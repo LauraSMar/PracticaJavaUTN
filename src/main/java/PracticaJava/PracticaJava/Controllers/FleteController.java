@@ -1,5 +1,6 @@
 package PracticaJava.PracticaJava.Controllers;
 
+import PracticaJava.PracticaJava.Entitys.Dtos.FleteDto;
 import PracticaJava.PracticaJava.Entitys.Flete;
 import PracticaJava.PracticaJava.Repos.FleteRepository;
 import PracticaJava.PracticaJava.Services.FleteService;
@@ -22,11 +23,11 @@ public class FleteController {
     private FleteService fleteService;
 
     @GetMapping("/notificacion/{id}")
-    public ResponseEntity<Flete> enviarNotificacion(@PathVariable Long id) {
-        Optional<Flete> flete = fleteService.actualizarEstadoFlete(id);
+    public ResponseEntity<FleteDto> enviarNotificacion(@PathVariable Long id) {
+        FleteDto flete = fleteService.actualizarEstadoFlete(id);
 
-        if (flete.isPresent()) {
-            return ResponseEntity.ok(flete.get());
+        if (flete!=null) {
+            return ResponseEntity.ok(flete);
         } else {
             return ResponseEntity.notFound().build();
         }

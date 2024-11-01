@@ -1,6 +1,7 @@
 package PracticaJava.PracticaJava.Services.ServiceImpl;
 
 
+import PracticaJava.PracticaJava.Entitys.Dtos.FleteDto;
 import PracticaJava.PracticaJava.Entitys.EstadoFlete;
 import PracticaJava.PracticaJava.Entitys.Flete;
 import PracticaJava.PracticaJava.Repos.FleteRepository;
@@ -20,10 +21,12 @@ public class FleteServiceImpl implements FleteService {
 
     @Autowired
     private FleteRepository fleteRepository;
-    private final RabbitTemplate rabbitTemplate = new RabbitTemplate();
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
 
     @Override
-    public Optional<Flete> actualizarEstadoFlete(Long id) {
+    public FleteDto actualizarEstadoFlete(Long id) {
         Optional<Flete> found = fleteRepository.findById(id);
 
         if(found.isPresent()){
@@ -39,11 +42,18 @@ public class FleteServiceImpl implements FleteService {
             }
 
             fleteRepository.save(found.get());
+            FleteDto fleteDTO = new FleteDto();
+            fleteDTO.setId(found.get().getId());
+            fleteDTO.setEstado(found.get().getEstado());
+            fleteDTO.setTransporte(found.get().getTransporte().getNombre());
+            fleteDTO.setId_transporte(found.get().getTransporte().getId());
+            String nuevo = found.get().getDescripcion() + " " +found.get().getEstado().toString();
 
-            rabbitTemplate.convertAndSend("fleteQueue", found.get());
-            System.out.println("Estado de Flete actualizado y enviado: " + found.get().getDescripcion());
+            rabbitTemplate.convertAndSend("fleteQueue", nuevo);
+            System.out.println("Estado de Flete actualizado y enviado: " + nuevo);
+            return fleteDTO;
         }
-        return Optional.empty();
+        return null;
 
     }
 

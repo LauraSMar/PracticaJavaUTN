@@ -8,8 +8,8 @@ public class FleteConsumer {
 
 
     @RabbitListener(queues = "fleteQueue")
-    public void receiveFlete(Flete flete) {
+    public void receiveFlete(String message) {
 
-        System.out.println("Flete recibido: " + flete);
+        System.out.println("Flete recibido: " + message);
     }
 }
